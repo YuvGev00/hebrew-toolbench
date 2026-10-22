@@ -18,11 +18,11 @@ MONTH = {"Nisan": 1, "Iyar": 2, "Sivan": 3, "Tammuz": 4, "Av": 5, "Elul": 6, "Ti
 
 def heb(year: int, month: str, day: int) -> str:
     """Gregorian ISO date of a Hebrew date."""
-    return dates.HebrewDate(year, MONTH[month], day).to_greg().to_pydate().isoformat()
+    return str(dates.HebrewDate(year, MONTH[month], day).to_greg().to_pydate().isoformat())
 
 
 def heb_year(year: int, month: str, day: int) -> int:
-    return dates.HebrewDate(year, MONTH[month], day).to_greg().year
+    return int(dates.HebrewDate(year, MONTH[month], day).to_greg().year)
 
 
 def week_of(iso: str) -> list[str]:
@@ -37,7 +37,7 @@ def shabbat_of_parsha(name: str) -> str:
     day = dates.GregorianDate(2026, 10, 20)
     for _ in range(400):
         if day.weekday() == 7 and parshios.getparsha_string(day, israel=True) == name:
-            return day.to_pydate().isoformat()
+            return str(day.to_pydate().isoformat())
         day = day + 1
     raise ValueError(name)
 

@@ -50,7 +50,7 @@ TISHREI, CHESHVAN, ADAR = 7, 8, 12
 
 def heb(year: int, month: int, day: int) -> str:
     """A Hebrew date as an ISO Gregorian date, computed (never typed by hand)."""
-    return dates.HebrewDate(year, month, day).to_greg().to_pydate().isoformat()
+    return str(dates.HebrewDate(year, month, day).to_greg().to_pydate().isoformat())
 
 
 def plus_days(iso: str, n: int) -> str:

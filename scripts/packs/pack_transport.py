@@ -56,7 +56,7 @@ def st(name: str) -> list[str]:
 
 def heb(year: int, month: int, day: int) -> str:
     """Hebrew date (pyluach month numbering, Nisan = 1) to an ISO Gregorian date."""
-    return dates.HebrewDate(year, month, day).to_greg().to_pydate().isoformat()
+    return str(dates.HebrewDate(year, month, day).to_greg().to_pydate().isoformat())
 
 
 def plus(iso: str, days: int) -> str:
