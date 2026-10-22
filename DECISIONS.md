@@ -71,6 +71,41 @@ On the Gemini API, `gemma-4-31b-it` sometimes returns its reasoning as `<thought
 `content` and answers translation requests itself, without calling `translate_text`.
 BFCL also scores a missing call as wrong. This is kept as `no_call`, not special-cased.
 
+### D15 — Accept an RFC 3339 full-time where the schema says `format: time` (2026-10-22)
+JSON Schema's `format: time` means an RFC 3339 *full-time* (`08:00:00Z`), not `HH:MM`. GLM, Qwen and
+DeepSeek (through OpenRouter) followed the standard and sent seconds plus an offset. They were scored
+`type_mismatch` until the gap showed up as 74 GLM errors concentrated on `time_words`. The scorer
+now accepts a full-time on the minute and compares the wall clock, as D5's date-time rule already did.
+Non-zero seconds or fractions (GLM sometimes emitted `09:45:00.0123…-09:45`) stay a type mismatch.
+Effect on overall accuracy: GLM 82.4 → 90.1, DeepSeek 87.4 → 90.1, Qwen 82.4 → 85.9; no other model changed.
+
+### D16 — v1 items were drafted by an LLM, then checked three ways (2026-10-22)
+The 650 v1 items were drafted by Claude (five agents, one per domain pack) under the written rules in
+`scripts/packs/AUTHORING.md`. They were not written by a human. Checks:
+1. **Automatic** (`tests/test_dataset.py`): gold well-formed against each schema; gold scores itself
+   correct; Hebrew dates exist (pyluach); Hebrew questions; unique questions; fixed tag vocabulary;
+   exact category counts; v0 kept byte-identical inside v1.
+2. **Manual** review of a random 30-item sample and of every item an agent flagged as uncertain. Fixes:
+   list items keep an optional leading ו; a candle-lighting event on כ״ה בכסלו accepts both Gregorian
+   dates; an internet bill accepts `bezeq`.
+3. **Adjudication** (`scripts/adjudicate.py`): any item that both strong models (Claude Sonnet 5.5 and
+   Gemini 3.5 Flash) failed was reviewed by hand. Of 19, 8 were fixed because the models' behaviour
+   was reasonable: two calendar items offered a lookup tool that makes a valid first step, and six
+   no-call items had a defensible call (default credit points, a derivable zman, a computable area,
+   quotes before advice). The other 11 were kept: the gold is right and the items are hard.
+Every item still has `review: pending`; a native-speaker pass by the maintainer is the next step.
+Known bias: the drafting model is the same family as two evaluated models (Claude Sonnet and Haiku).
+
+### D17 — Models for v1: paid tiers allowed, a few dollars in total (2026-10-22)
+The user approved paid runs, so D11's $0 rule no longer limits the model list. Nine models were run:
+Claude Sonnet 5.5 and Haiku 5.5 (Anthropic's OpenAI-compatible endpoint, no temperature, because these
+models reject it), Gemini 3.5 Flash and Flash-Lite, Gemma 4 31B (Gemini API), Qwen 3.8 27B,
+DeepSeek V4.1 Flash and GLM 5.3 (OpenRouter, paid), and Minimax M3.1 Flash (OpenRouter `:free`).
+Estimated total cost is about $5-7. `nvidia/nemotron-3-ultra-550b-a55b:free` was dropped after 44 items
+(about 2 requests a minute, and it would have used up the free daily quota); its partial outputs are
+kept in `results/excluded/`. DictaLM 3.0 is not offered by any API provider we found, so it is not
+evaluated.
+
 ### Open
 - Licence for the release: proposal is CC BY 4.0 for data and Apache-2.0 for code. Not decided.
-- Public repo and HF dataset: not created. Waiting on the user.
+- Public repo and HF dataset: being prepared (2026-10-22).
