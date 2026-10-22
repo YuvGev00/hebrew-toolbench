@@ -102,3 +102,7 @@ uv run hebrew-toolbench report
 - **LLM-drafted items**, with a native review still pending (above), and a possible home advantage for Claude.
 - **Serving stack included.** Each score measures a model *and* the provider's tool-call parsing.
 - **DictaLM 3.0 is missing.** No API provider we found serves it.
+
+## License
+
+Code: [MIT](LICENSE). Data (`data/*.jsonl`): [CC BY 4.0](LICENSE-DATA).

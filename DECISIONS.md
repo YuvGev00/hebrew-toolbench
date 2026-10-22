@@ -107,5 +107,5 @@ kept in `results/excluded/`. DictaLM 3.0 is not offered by any API provider we f
 evaluated.
 
 ### Open
-- Licence for the release: proposal is CC BY 4.0 for data and Apache-2.0 for code. Not decided.
+- Licence: decided 2026-10-22. MIT for code (matching the author's other repos), CC BY 4.0 for data.
 - Public repo and HF dataset: being prepared (2026-10-22).
