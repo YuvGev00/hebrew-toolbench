@@ -216,7 +216,8 @@ multiple(["hebrew_calendar", "gematria", "leap_year"], "מה התאריך הלו
          call("convert_hebrew_date", year=5787, month="Adar I", day=24))
 multiple(["canonical_value", "hebrew_calendar"], "באיזה תאריך חוגגים את יום העצמאות ב-2027?", HOL,
          call("get_holiday_date", holiday="yom_haatzmaut", gregorian_year=2027))
-multiple(["hebrew_calendar", "gematria", "calendar_compute", "free_text_hebrew"], "תכניס ליומן 'ערב שירה' בי״ט בכסלו ב-20:00", HOL,
+multiple(["hebrew_calendar", "gematria", "calendar_compute", "free_text_hebrew"], "תכניס ליומן 'ערב שירה' בי״ט בכסלו ב-20:00",
+         ["create_event", "get_holiday_date", "get_shabbat_times"],
          call("create_event", title="ערב שירה", date=heb(5787, "Kislev", 19), start_time="20:00", duration_minutes=[None, 60]))
 multiple(["canonical_value", "hebrew_calendar"], "סוכות 2027 מתחיל מתי?", HOL,
          call("get_holiday_date", holiday="sukkot", gregorian_year=2027))
@@ -302,11 +303,11 @@ parallel(["parallel_multiple", "canonical_value", "mixed_direction", "free_text_
          [M, "send_sms"],
          call(M, movie=MOVIE["jaws"], cinema="Lev Dizengoff", date=THU, time="22:00", tickets=2),
          call("send_sms", phone="0547778899", text="הזמנתי לנו כרטיסים לחמישי"))
-parallel(["parallel_multiple", "canonical_value", "hebrew_calendar", "gematria", "calendar_compute", "free_text_hebrew"],
-         "מתי פורים 2027? וגם תכניס ליומן 'מסיבת חנוכה בעבודה' בכ״ז בכסלו תשפ״ז ב-18:00",
+parallel(["parallel_multiple", "canonical_value", "hebrew_calendar", "date_ddmm", "free_text_hebrew"],
+         "מתי פורים 2027? וגם תכניס ליומן 'מסיבת חנוכה בעבודה' ב-7/12 ב-18:00",
          ["get_holiday_date", "create_event"],
          call("get_holiday_date", holiday="purim", gregorian_year=2027),
-         call("create_event", title="מסיבת חנוכה בעבודה", date=heb(5787, "Kislev", 27), start_time="18:00",
+         call("create_event", title="מסיבת חנוכה בעבודה", date="2026-12-07", start_time="18:00",
               duration_minutes=[None, 60]))
 parallel(["gender_morphology", "canonical_value"], "תשלח ברכת חג לדוד ולשרה", ["send_greeting"],
          call("send_greeting", recipient_name="דוד", recipient_gender="male", occasion="holiday"),
@@ -356,7 +357,7 @@ parallel(["canonical_value", "transliteration"], "מה התוצאות של מכ�
 irrelevant(["near_miss", "hebrew_calendar"], "מתי המולד של חודש כסלו?", [Z])
 irrelevant(["near_miss", "hebrew_calendar"], "מתי חג הסיגד ב-2027?", ["get_holiday_date"])
 irrelevant(["near_miss", "hebrew_calendar"], "מתי ט״ו באב ב-2027?", ["get_holiday_date"])
-irrelevant(["near_miss"], "מתי פלג המנחה מחר בירושלים?", [Z])
+irrelevant(["near_miss"], "באיזו שעה קוראים מגילה בבית הכנסת הגדול בירושלים?", [Z])
 irrelevant(["near_miss"], "תזמין לי שני כרטיסים להצגה 'הקמצן' בהבימה ביום חמישי", [M])
 irrelevant(["near_miss"], "מה התוצאה של מכבי תל אביב בכדורעף?", [S])
 irrelevant(["near_miss"], "איך יצא המשחק של ריאל מדריד אתמול?", [S])

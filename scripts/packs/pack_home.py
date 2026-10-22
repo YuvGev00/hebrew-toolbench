@@ -364,7 +364,7 @@ irrelevant(["missing_info"], "תזכיר לי לקחת את הכדור", ["set_r
 irrelevant(["missing_info"], "תחדש לי את המרשם", [RX])
 irrelevant(["knowledge"], "כמה קלוריות יש במנה פלאפל בפיתה?", [FOOD])
 irrelevant(["knowledge"], "איך מכינים שקשוקה?", [FOOD, GRO])
-irrelevant(["knowledge", "unit_local"], "כמה דונם יש במגרש כדורגל?", [CU])
+irrelevant(["missing_info", "unit_local"], "כמה דונם יש לסבא שלי במושב, תמיר לי לאקרים", [CU])
 irrelevant(["knowledge"], "מה המינון המקסימלי של אקמול ביום למבוגר?", [RX])
 irrelevant(["advice"], "כדאי לי לעבור מכללית למכבי?", ["book_doctor"])
 irrelevant(["chitchat", "gender_morphology"], "אני מרגישה קצת חולה היום, סתם רציתי לפרוק", ["book_doctor", "set_reminder"])
