@@ -102,6 +102,9 @@ applied again without spending API quota.
 
 ## Plan to reach about 800 items (v1)
 
+**Status (2026-10-22):** v1 has 800 items and 52 tools (steps 2 and 3 done; the items were LLM-drafted
+and adjudicated, see DECISIONS D16). Steps 1, 4, 5 and 6 are still open.
+
 1. **Native review of v0** by the author: fix gold, set `review: native_verified`, and log every
    change in DECISIONS.md.
 2. **Add tools:** grow from 24 to about 60 Israeli-domain tools (Gov.il services, Rav-Kav, Waze,

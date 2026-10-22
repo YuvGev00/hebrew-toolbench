@@ -25,7 +25,10 @@ BIDI_CONTROLS = re.compile(r"[\u200e\u200f\u061c\u202a-\u202e\u2066-\u2069]")
 QUOTE_FOLD = str.maketrans({"״": '"', "”": '"', "“": '"', "׳": "'", "’": "'", "‘": "'"})
 EDGE_PUNCT = " \t\n'\".,!?:;"
 DATE_RE = re.compile(r"^(\d{4})-(\d{1,2})-(\d{1,2})$")
-TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::(00))?$")
+# HH:MM, or an RFC 3339 full-time on the minute ("08:00:00Z", "08:00:00.000+02:00"): JSON Schema's
+# `format: time` means full-time, so providers that enforce it emit seconds and an offset. The wall clock is
+# compared, as for date-time (see DECISIONS D15). Non-zero seconds or fractions stay a type mismatch.
+TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::00(?:\.0+)?(?:Z|[+-]\d{2}:\d{2})?)?$")
 
 
 class TypeMismatch(ValueError):

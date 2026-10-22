@@ -56,6 +56,12 @@ class TestNormalize:
 
     def test_time_and_datetime(self) -> None:
         assert canonical("9:05", {"type": "string", "format": "time"}) == "09:05"
+        time_schema = {"type": "string", "format": "time"}
+        for full_time in ("09:05:00", "09:05:00Z", "09:05:00.000Z", "09:05:00+02:00"):
+            assert canonical(full_time, time_schema) == "09:05"
+        for bad in ("09:05:30", "09:05:00.0123-09:05", "9.05"):
+            with pytest.raises(TypeMismatch):
+                canonical(bad, time_schema)
         dt_schema = {"type": "string", "format": "date-time"}
         assert canonical("2026-10-21T09:00:00+03:00", dt_schema) == canonical("2026-10-21T09:00", dt_schema)
 

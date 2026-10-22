@@ -1,34 +1,52 @@
-| Model | N | Overall | simple (64) | multiple (32) | parallel (24) | irrelevance (30) | canonical_value (44) | lang-mismatch errors |
+| Model | N | Overall | simple (300) | multiple (200) | parallel (150) | irrelevance (150) | canonical_value (443) | lang-mismatch errors |
 |---|---|---|---|---|---|---|---|---|
-| `gemini-3.5-flash-lite` | 150 | 90.7 | 92.2 | 96.9 | 91.7 | 80.0 | 95.5 | 3 |
-| `gemma-4-31b-it` | 150 | 90.7 | 89.1 | 93.8 | 87.5 | 93.3 | 90.9 | 2 |
-| `minimax/minimax-m3.1-flash:free` | 150 | 72.0 | 73.4 | 78.1 | 87.5 | 50.0 | 77.3 | 0 | 
+| `claude-sonnet-5-5` | 800 | 95.8 | 96.3 | 98.5 | 95.3 | 91.3 | 97.5 | 0 |
+| `gemini-3.5-flash` | 800 | 93.4 | 96.7 | 97.5 | 95.3 | 79.3 | 97.5 | 0 |
+| `claude-haiku-5-5` | 800 | 92.5 | 93.7 | 95.0 | 90.0 | 89.3 | 93.2 | 1 |
+| `gemma-4-31b-it` | 800 | 90.6 | 89.3 | 91.5 | 91.3 | 91.3 | 90.7 | 4 |
+| `deepseek/deepseek-v4.1-flash` | 800 | 90.1 | 92.7 | 91.0 | 90.7 | 83.3 | 91.9 | 0 |
+| `z-ai/glm-5.3` | 800 | 90.1 | 91.0 | 89.0 | 90.0 | 90.0 | 91.2 | 0 |
+| `qwen/qwen3.8-27b` | 800 | 85.9 | 84.3 | 85.5 | 85.3 | 90.0 | 86.7 | 2 |
+| `gemini-3.5-flash-lite` | 800 | 81.8 | 85.0 | 90.0 | 82.0 | 64.0 | 84.0 | 26 |
+| `minimax/minimax-m3.1-flash:free` | 800 | 59.9 | 61.3 | 65.5 | 70.7 | 38.7 | 63.7 | 2 | 
 
-| Error type | `gemini-3.5-flash-lite` | `gemma-4-31b-it` | `minimax/minimax-m3.1-flash:free` |
-|---|---|---|---|
-| invalid_json | 0 | 0 | 1 |
-| called_when_irrelevant | 6 | 2 | 15 |
-| no_call | 0 | 5 | 0 |
-| wrong_call_count | 2 | 1 | 13 |
-| wrong_function | 0 | 0 | 1 |
-| value_language_mismatch | 3 | 2 | 0 |
-| value_mismatch | 3 | 4 | 12 | 
+| Error type | `claude-haiku-5-5` | `claude-sonnet-5-5` | `deepseek/deepseek-v4.1-flash` | `gemini-3.5-flash-lite` | `gemini-3.5-flash` | `gemma-4-31b-it` | `minimax/minimax-m3.1-flash:free` | `qwen/qwen3.8-27b` | `z-ai/glm-5.3` |
+|---|---|---|---|---|---|---|---|---|---|
+| invalid_json | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 |
+| called_when_irrelevant | 16 | 13 | 25 | 54 | 31 | 13 | 92 | 15 | 15 |
+| no_call | 7 | 1 | 4 | 1 | 4 | 11 | 9 | 5 | 6 |
+| wrong_call_count | 4 | 3 | 15 | 9 | 6 | 1 | 88 | 2 | 2 |
+| wrong_function | 1 | 0 | 3 | 1 | 2 | 1 | 3 | 1 | 1 |
+| missing_arg | 0 | 7 | 9 | 1 | 0 | 2 | 0 | 0 | 5 |
+| unexpected_arg | 11 | 6 | 14 | 10 | 2 | 5 | 22 | 20 | 13 |
+| type_mismatch | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
+| value_language_mismatch | 1 | 0 | 0 | 26 | 0 | 4 | 2 | 2 | 0 |
+| value_mismatch | 20 | 4 | 9 | 43 | 8 | 38 | 104 | 68 | 27 | 
 
-| Tag | N | `gemini-3.5-flash-lite` | `gemma-4-31b-it` | `minimax/minimax-m3.1-flash:free` |
-|---|---|---|---|---|
-| canonical_value | 44 | 95.5 | 90.9 | 77.3 |
-| hebrew_calendar | 24 | 91.7 | 87.5 | 62.5 |
-| currency_ils | 22 | 100.0 | 100.0 | 86.4 |
-| mixed_direction | 19 | 100.0 | 100.0 | 78.9 |
-| date_relative | 18 | 100.0 | 100.0 | 55.6 |
-| free_text_hebrew | 18 | 94.4 | 72.2 | 77.8 |
-| near_miss | 17 | 76.5 | 94.1 | 52.9 |
-| transliteration | 15 | 86.7 | 80.0 | 66.7 |
-| gematria | 11 | 90.9 | 90.9 | 63.6 |
-| gender_morphology | 10 | 70.0 | 80.0 | 100.0 |
-| number_words | 9 | 100.0 | 100.0 | 77.8 |
-| time_words | 8 | 100.0 | 100.0 | 62.5 |
-| date_ddmm | 7 | 100.0 | 100.0 | 100.0 |
-| number_format | 7 | 100.0 | 100.0 | 100.0 |
-| parallel_multiple | 7 | 100.0 | 100.0 | 71.4 |
-| knowledge | 6 | 100.0 | 83.3 | 33.3 |
+| Tag | N | `claude-haiku-5-5` | `claude-sonnet-5-5` | `deepseek/deepseek-v4.1-flash` | `gemini-3.5-flash-lite` | `gemini-3.5-flash` | `gemma-4-31b-it` | `minimax/minimax-m3.1-flash:free` | `qwen/qwen3.8-27b` | `z-ai/glm-5.3` |
+|---|---|---|---|---|---|---|---|---|---|---|
+| canonical_value | 443 | 93.2 | 97.5 | 91.9 | 84.0 | 97.5 | 90.7 | 63.7 | 86.7 | 91.2 |
+| date_relative | 128 | 92.2 | 93.0 | 92.2 | 93.0 | 98.4 | 93.8 | 50.8 | 86.7 | 85.9 |
+| free_text_hebrew | 127 | 85.0 | 90.6 | 92.1 | 74.8 | 96.9 | 83.5 | 59.8 | 81.1 | 91.3 |
+| transliteration | 94 | 94.7 | 95.7 | 93.6 | 86.2 | 95.7 | 88.3 | 56.4 | 66.0 | 92.6 |
+| near_miss | 87 | 85.1 | 88.5 | 77.0 | 58.6 | 70.1 | 87.4 | 27.6 | 86.2 | 86.2 |
+| hebrew_calendar | 86 | 87.2 | 94.2 | 84.9 | 76.7 | 87.2 | 82.6 | 45.3 | 72.1 | 82.6 |
+| currency_ils | 80 | 98.8 | 100.0 | 96.2 | 95.0 | 95.0 | 96.2 | 83.8 | 91.2 | 95.0 |
+| date_ddmm | 67 | 94.0 | 98.5 | 91.0 | 92.5 | 97.0 | 98.5 | 77.6 | 92.5 | 91.0 |
+| number_words | 60 | 93.3 | 96.7 | 91.7 | 88.3 | 98.3 | 90.0 | 68.3 | 85.0 | 91.7 |
+| time_words | 56 | 89.3 | 85.7 | 83.9 | 94.6 | 98.2 | 94.6 | 37.5 | 80.4 | 75.0 |
+| mixed_direction | 51 | 92.2 | 96.1 | 96.1 | 94.1 | 90.2 | 94.1 | 70.6 | 88.2 | 90.2 |
+| gematria | 48 | 87.5 | 97.9 | 91.7 | 77.1 | 91.7 | 81.2 | 39.6 | 66.7 | 81.2 |
+| parallel_multiple | 45 | 82.2 | 88.9 | 86.7 | 82.2 | 91.1 | 88.9 | 53.3 | 82.2 | 84.4 |
+| number_format | 42 | 100.0 | 100.0 | 95.2 | 92.9 | 97.6 | 95.2 | 88.1 | 95.2 | 92.9 |
+| inference | 40 | 90.0 | 95.0 | 90.0 | 77.5 | 92.5 | 87.5 | 50.0 | 80.0 | 87.5 |
+| gender_addressee | 35 | 91.4 | 94.3 | 94.3 | 82.9 | 97.1 | 91.4 | 71.4 | 82.9 | 88.6 |
+| missing_info | 27 | 92.6 | 88.9 | 96.3 | 37.0 | 88.9 | 96.3 | 51.9 | 92.6 | 92.6 |
+| gender_morphology | 21 | 90.5 | 100.0 | 81.0 | 76.2 | 90.5 | 81.0 | 76.2 | 85.7 | 85.7 |
+| knowledge | 19 | 94.7 | 100.0 | 89.5 | 94.7 | 94.7 | 94.7 | 52.6 | 100.0 | 94.7 |
+| calendar_compute | 18 | 77.8 | 94.4 | 77.8 | 50.0 | 83.3 | 55.6 | 5.6 | 38.9 | 61.1 |
+| leap_year | 10 | 90.0 | 100.0 | 100.0 | 90.0 | 90.0 | 80.0 | 40.0 | 80.0 | 80.0 |
+| chitchat | 10 | 100.0 | 100.0 | 100.0 | 100.0 | 100.0 | 100.0 | 70.0 | 100.0 | 100.0 |
+| advice | 8 | 100.0 | 100.0 | 62.5 | 100.0 | 87.5 | 100.0 | 37.5 | 87.5 | 87.5 |
+| half_rooms | 7 | 100.0 | 100.0 | 100.0 | 71.4 | 100.0 | 100.0 | 85.7 | 100.0 | 100.0 |
+| unit_local | 6 | 100.0 | 83.3 | 100.0 | 83.3 | 100.0 | 100.0 | 83.3 | 100.0 | 83.3 |

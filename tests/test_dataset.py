@@ -1,12 +1,13 @@
 """Integrity checks on the seed set: every gold answer must be well-formed and self-consistent."""
 
+import re
 from collections import Counter
 from typing import Any
 
 import pytest
 from pyluach import dates, hebrewcal
 
-from hebrew_toolbench.dataset import CATEGORIES, load_items
+from hebrew_toolbench.dataset import CATEGORIES, DEFAULT_DATASET, SEED_V0, load_items
 from hebrew_toolbench.normalize import canonical
 from hebrew_toolbench.scorer import Call, score
 
@@ -104,3 +105,36 @@ def test_tag_coverage() -> None:
         "canonical_value",
     ):
         assert tags[required] >= 5, required
+
+
+TAGS = {
+    "advice", "bidi_controls", "calendar_compute", "canonical_value", "chitchat", "currency_ils", "date_ddmm",
+    "date_relative", "free_text_hebrew", "gematria", "gender_addressee", "gender_morphology", "hebrew_calendar",
+    "inference", "knowledge", "leap_year", "missing_info", "mixed_direction", "near_miss", "number_format",
+    "number_words", "parallel_multiple", "time_words", "transliteration", "half_rooms", "unit_local",
+}  # fmt: skip
+TOOLS_OFFERED = {"simple": {1}, "multiple": {3}, "parallel": {1, 2}, "irrelevance": {1, 2}}
+HEBREW = re.compile(r"[א-ת]")
+
+
+@pytest.mark.parametrize("item", ITEMS, ids=IDS)
+def test_item_shape(item: dict[str, Any]) -> None:
+    assert HEBREW.search(item["question"]), "question must be Hebrew"
+    assert set(item["tags"]) <= TAGS, set(item["tags"]) - TAGS
+    assert len(item["functions"]) in TOOLS_OFFERED[item["category"]]
+    names = [f["name"] for f in item["functions"]]
+    assert len(set(names)) == len(names)
+
+
+def test_questions_unique() -> None:
+    dupes = [q for q, n in Counter(i["question"].strip() for i in ITEMS).items() if n > 1]
+    assert not dupes, dupes
+
+
+@pytest.mark.skipif(DEFAULT_DATASET.name != "v1.jsonl", reason="only for the full v1 file")
+def test_v1_composition_and_v0_prefix() -> None:
+    composition = Counter(i["category"] for i in ITEMS)
+    assert composition == {"simple": 300, "multiple": 200, "parallel": 150, "irrelevance": 150}
+    v0 = load_items(SEED_V0)
+    v1_as_v0 = [{k: v for k, v in i.items() if k != "source"} for i in ITEMS if i["source"] == "v0"]
+    assert v1_as_v0 == v0
