@@ -18,6 +18,7 @@ def main(argv: list[str] | None = None) -> None:
     run_p.add_argument("--env-file", type=Path, help="file with TAINTWALL_BASE_URL / TAINTWALL_API_KEY")
     run_p.add_argument("--rpm", type=float, default=10.0, help="request rate cap (free tiers are ~10-20)")
     run_p.add_argument("--limit", type=int, help="only the first N items")
+    run_p.add_argument("--no-temperature", action="store_true", help="send no temperature (Claude 5.5 rejects it)")
     sub.add_parser("report", help="score all cached raw outputs and print tables")
     args = parser.parse_args(argv)
 
@@ -25,7 +26,7 @@ def main(argv: list[str] | None = None) -> None:
     if args.command == "run":
         if args.env_file:
             runner.load_env_file(args.env_file.expanduser())
-        new, failed = runner.run(items[: args.limit], args.model, args.rpm)
+        new, failed = runner.run(items[: args.limit], args.model, args.rpm, None if args.no_temperature else 0)
         print(f"{args.model}: {new} new, {failed} failed -> {runner.raw_path(args.model)}")
         return
     results = [report.score_raw(items, p) for p in sorted((runner.RESULTS_DIR / "raw").glob("*.jsonl"))]

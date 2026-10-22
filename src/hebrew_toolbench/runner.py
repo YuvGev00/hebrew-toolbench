@@ -49,7 +49,8 @@ def _strip_private_keys(schema: Any) -> Any:
     return schema
 
 
-def build_request(item: dict[str, Any], model: str) -> dict[str, Any]:
+def build_request(item: dict[str, Any], model: str, temperature: float | None = 0) -> dict[str, Any]:
+    """Chat-completions body. `temperature=None` sends no sampling parameter (Claude 5.5 models reject it)."""
     messages = [{"role": "user", "content": item["question"]}]
     if item.get("system"):
         messages.insert(0, {"role": "system", "content": item["system"]})
@@ -58,7 +59,7 @@ def build_request(item: dict[str, Any], model: str) -> dict[str, Any]:
         "messages": messages,
         "tools": [{"type": "function", "function": _strip_private_keys(f)} for f in item["functions"]],
         "tool_choice": "auto",
-        "temperature": 0,
+        **({} if temperature is None else {"temperature": temperature}),
     }
 
 
@@ -105,7 +106,7 @@ def parse_response(resp: dict[str, Any]) -> dict[str, Any]:
     return {"calls": calls, "content": message.get("content") or ""}
 
 
-def run(items: list[dict[str, Any]], model: str, rpm: float) -> tuple[int, int]:
+def run(items: list[dict[str, Any]], model: str, rpm: float, temperature: float | None = 0) -> tuple[int, int]:
     """Query `model` on uncached items. Returns (new, failed)."""
     base, key = os.environ.get(ENV_URL), os.environ.get(ENV_KEY)
     if not base or not key:
@@ -120,7 +121,8 @@ def run(items: list[dict[str, Any]], model: str, rpm: float) -> tuple[int, int]:
             continue
         started = time.monotonic()
         try:
-            record = {"id": item["id"], "model": model, **parse_response(_post(url, key, build_request(item, model)))}
+            response = _post(url, key, build_request(item, model, temperature))
+            record = {"id": item["id"], "model": model, **parse_response(response)}
         except ApiError as e:
             failed += 1
             print(f"  {item['id']}: {e}")
