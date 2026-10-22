@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
 CATEGORIES = ("simple", "multiple", "parallel", "irrelevance")
-DEFAULT_DATASET = Path(__file__).resolve().parents[2] / "data" / "seed_v0.jsonl"
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+# v1 (800 items) is the default; HTB_DATA points tests and tools at another file (scripts/check_pack.py).
+DEFAULT_DATASET = Path(os.environ.get("HTB_DATA", DATA_DIR / "v1.jsonl"))
+SEED_V0 = DATA_DIR / "seed_v0.jsonl"
 
 
 def load_items(path: Path = DEFAULT_DATASET) -> list[dict[str, Any]]:

@@ -28,7 +28,7 @@ hebrew-toolbench = "hebrew_toolbench.cli:main"
 line-length = 120
 target-version = "py312"
 # Hand-authored item data; one item per call reads better unwrapped.
-extend-exclude = ["scripts/build_seed.py"]
+extend-exclude = ["scripts/build_seed.py", "scripts/packs/pack_*.py"]
 
 [tool.ruff.format]
 exclude = ["scripts/tools.py"]
