@@ -6,6 +6,10 @@ It tests what generic benchmarks miss: Hebrew mentions that an API needs in Engl
 ("באר שבע" → `Beer Sheva`), the Jewish calendar, gematria, ₪ amounts in words, DD/MM dates, spoken
 times, gendered inflection, and right-to-left text with embedded IDs.
 
+**On Hugging Face:** [`YuvGev/hebrew-toolbench`](https://huggingface.co/datasets/YuvGev/hebrew-toolbench), loadable with
+`load_dataset("YuvGev/hebrew-toolbench", split="test")`. `functions` and `gold` are stored there as JSON strings
+(`scripts/export_hf.py` builds the upload from `data/v1.jsonl`).
+
 ## Results (v1, 800 items, 2026-10-22)
 
 Accuracy in %, with a 95% Wilson interval on the overall score. Single turn, `tool_choice: auto`.
