@@ -45,7 +45,7 @@ from datasets import load_dataset
 ds = load_dataset("YuvGev/hebrew-toolbench", split="test")
 item = ds[0]
 functions = json.loads(item["functions"])  # tool schemas to offer the model
-gold = json.loads(item["gold"])            # expected call(s), with every acceptable value
+gold = json.loads(item["gold"])  # expected call(s), with every acceptable value
 print(item["question"])
 ```
 
